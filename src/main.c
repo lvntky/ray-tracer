@@ -6,7 +6,7 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-void render(const Sphere *sphere) {
+void render(const Sphere *sphere, size_t sphere_num) {
     float fov = M_PI_2 / 2.0f; // Corrected fov to float
     Vec3f *frame_buffer = (Vec3f *)malloc(WIDTH * HEIGHT * sizeof(Vec3f));
     if (frame_buffer == NULL) {
@@ -28,7 +28,7 @@ void render(const Sphere *sphere) {
 
             // Ensure that index is within bounds
             if (index >= 0 && index < WIDTH * HEIGHT) {
-                frame_buffer[index] = cast_ray(&ray_origin, &dir, sphere);
+	      frame_buffer[index] = cast_ray(&ray_origin, &dir, sphere, sphere_num);
             }
         }
     }
@@ -57,11 +57,30 @@ void render(const Sphere *sphere) {
 }
 
 int main() {
-    Sphere sphere;
-    sphere.center = vec3f_init_values(0.0f, 0.0f, -16.0f);
-    sphere.radius = 2.0f;
+    const int num_spheres = 3; // Set the number of spheres
 
-    render(&sphere);
+    Sphere spheres[num_spheres];
+    Material red_velvet;
+    Material ivory;
+    Material green;
+    red_velvet.material_color = vec3f_init_values(0.3, 0.1, 0.1);
+    ivory.material_color = vec3f_init_values(0.4, 0.4, 0.3);
+    green.material_color = vec3f_init_values(0.2, 0.9, 0.1);
+    
+    spheres[0].center = vec3f_init_values(4.0f, 3.0f, -15.0f);
+    spheres[0].radius = 2.0f;
+    spheres[0].material = red_velvet;
+
+    spheres[1].center = vec3f_init_values(4.0f, 1.0f, -12.0f);
+    spheres[1].radius = 1.5f;
+    spheres[1].material = ivory;
+
+    
+    spheres[2].center = vec3f_init_values(-2.0f, 1.0f, -17.0f);
+    spheres[2].radius = 2.0f;
+    spheres[2].material = green;
+
+    render(spheres, num_spheres);
 
     return 0;
 }
