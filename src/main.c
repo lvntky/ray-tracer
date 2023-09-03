@@ -121,21 +121,30 @@ void render(const Sphere *spheres, size_t num_spheres, Light *lights, size_t num
 }
 
 int main() {
-    const int num_spheres = 5;
+    const int num_spheres = 11;
     const int num_lights = 1;
 
     Sphere spheres[num_spheres];
     Material red_velvet;
     Material ivory;
+    Material radio;
+
 
     red_velvet.material_color = vec3f_init_values(0.3, 0.1, 0.1);
     ivory.material_color = vec3f_init_values(0.4, 0.4, 0.3);
+    radio.material_color = vec3f_init_values(0.5, 0.5, 0.5);
 
     spheres[0] = sphere_init(vec3f_init_values(4.0f, 3.0f, -10.0f), 2.0f, red_velvet);
     spheres[1] = sphere_init(vec3f_init_values(6.0f, 1.5f, -8.0f), 1.5f, ivory);
     spheres[2] = sphere_init(vec3f_init_values(2.5f, 2.0f, -15.0f), 2.0f, ivory);
     spheres[3] = sphere_init(vec3f_init_values(0.0f, -2.0f, -12.0f), 1.0f, red_velvet);
-    spheres[4] = sphere_init(vec3f_init_values(-7.0f, 8.0f, -10.0f), 2.0f, ivory);
+    spheres[4] = sphere_init(vec3f_init_values(-7.0f, 8.0f, -10.0f), 2.0f, red_velvet);
+    spheres[5] = sphere_init(vec3f_init_values(-5.0f, 5.0f, -13.0f), 2.0f, ivory);
+    spheres[6] = sphere_init(vec3f_init_values(-5.0f, 3.0f, -13.0f), 2.0f, ivory);
+    spheres[7] = sphere_init(vec3f_init_values(-3.0f, 5.0f, -13.0f), 1.5f, red_velvet);
+    spheres[8] = sphere_init(vec3f_init_values(-5.0f, 5.0f, -13.0f), 1.5f, red_velvet);
+    spheres[9] = sphere_init(vec3f_init_values(-4.3f, -5.0f, -13.0f), 1.5f, ivory);
+    spheres[10] = sphere_init(vec3f_init_values(-5.0f, -5.0f, -13.0f), 1.5f, radio);
 
     Light lights[num_lights];
     lights[0].position = vec3f_init_values(-50, 20, 20);
