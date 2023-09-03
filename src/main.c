@@ -6,7 +6,7 @@
 #define WIDTH 1024
 #define HEIGHT 768
 
-void render(const Sphere *sphere, size_t sphere_num) {
+void render(const Sphere *sphere, size_t sphere_num, Light* lights, size_t light_num) {
     float fov = M_PI_2 / 2.0f; // Corrected fov to float
     Vec3f *frame_buffer = (Vec3f *)malloc(WIDTH * HEIGHT * sizeof(Vec3f));
     if (frame_buffer == NULL) {
@@ -28,7 +28,7 @@ void render(const Sphere *sphere, size_t sphere_num) {
 
             // Ensure that index is within bounds
             if (index >= 0 && index < WIDTH * HEIGHT) {
-	      frame_buffer[index] = cast_ray(&ray_origin, &dir, sphere, sphere_num);
+	      frame_buffer[index] = cast_ray(&ray_origin, &dir, sphere, sphere_num, lights, light_num);
             }
         }
     }
@@ -57,15 +57,16 @@ void render(const Sphere *sphere, size_t sphere_num) {
 }
 
 int main() {
-    const int num_spheres = 3; // Set the number of spheres
+    const int num_spheres = 4; // Set the number of spheres
+    const int num_light = 1;
 
     Sphere spheres[num_spheres];
     Material red_velvet;
     Material ivory;
-    Material green;
+
     red_velvet.material_color = vec3f_init_values(0.3, 0.1, 0.1);
     ivory.material_color = vec3f_init_values(0.4, 0.4, 0.3);
-    green.material_color = vec3f_init_values(0.2, 0.9, 0.1);
+
     
     spheres[0].center = vec3f_init_values(4.0f, 3.0f, -15.0f);
     spheres[0].radius = 2.0f;
@@ -76,11 +77,19 @@ int main() {
     spheres[1].material = ivory;
 
     
-    spheres[2].center = vec3f_init_values(-2.0f, 1.0f, -17.0f);
-    spheres[2].radius = 2.0f;
-    spheres[2].material = green;
+    spheres[2].center = vec3f_init_values(1.0f, 1.1f, -11.0f);
+    spheres[2].radius = 1.0;
+    spheres[2].material = ivory;
 
-    render(spheres, num_spheres);
+    spheres[3].center = vec3f_init_values(-3.0f, -0.5f, -13.0f);
+    spheres[3].radius = 1.0f;
+    spheres[3].material = red_velvet;
+
+    Light lights[num_light];
+    lights[0].position = vec3f_init_values(-50, 20, 20);
+    lights[0].intensity = 1.5f;
+
+    render(spheres, num_spheres, lights, num_light);
 
     return 0;
 }
